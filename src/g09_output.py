@@ -48,13 +48,29 @@ class Polar:
                 gamma_start_i.append(i)
                 
         dipole_input_section = lines[dipole_start_i[0]:dipole_start_i[0]+7]
-        dipole_dipole_section = lines[dipole_start_i[1]:dipole_start_i[1]+7]
+        try:
+            dipole_dipole_section = lines[dipole_start_i[1]:dipole_start_i[1]+7]
+        except IndexError:
+            print("dipole is zero.")
+            dipole_dipole_section = None
         alpha_input_section = lines[alpha_start_i[0]:alpha_start_i[0]+32]
-        alpha_dipole_section = lines[alpha_start_i[1]:alpha_start_i[1]+32]
+        try:
+            alpha_dipole_section = lines[alpha_start_i[1]:alpha_start_i[1]+32]
+        except IndexError:
+            print("dipole is zero.")
+            alpha_dipole_section = None
         beta_input_section = lines[beta_start_i[0]+3:beta_start_i[0]+126]
-        beta_dipole_section = lines[beta_start_i[1]+3:beta_start_i[1]+126]
+        try:
+            beta_dipole_section = lines[beta_start_i[1]+3:beta_start_i[1]+126]
+        except IndexError:
+            print("dipole is zero.")
+            beta_dipole_section = None
         gamma_input_section = lines[gamma_start_i[0]+3:gamma_start_i[0]+219]
-        gamma_dipole_section = lines[gamma_start_i[1]+3:gamma_start_i[1]+219]
+        try:
+            gamma_dipole_section = lines[gamma_start_i[1]+3:gamma_start_i[1]+219]
+        except IndexError:
+            print("dipole is zero.")
+            gamma_dipole_section = None
         
         return (dipole_input_section,dipole_dipole_section,
                 alpha_input_section,alpha_dipole_section,
@@ -98,26 +114,30 @@ class Polar:
         return newline
 
     def _convert_section(self,section,keyword="Alpha"):
-        new_section = []
-        for line in section:
-            if (keyword in line) or ("SI" in line):
-                pass
-            else:
-                newline = self._convert_char(line)
-                new_section.append(newline)
+        if section != None:
+            new_section = []
+            for line in section:
+                if (keyword in line) or ("SI" in line):
+                    pass
+                else:
+                    newline = self._convert_char(line)
+                    new_section.append(newline)
+        else:
+            new_section = None
         return new_section
 
     def _get_dipole(self,value_list):
         component_list = ["Tot","x","y","z"]
         dipole = np.full_like(component_list,np.nan,dtype=float)
-        for i,val in enumerate(value_list):
-            component = val.split(",")[0]
-            value_SI = float(val.split(",")[3].replace("\n",""))
-            try:
-                ind = component_list.index(component)
-            except:
-                print("cannot find the component ",component)
-            dipole[ind] = value_SI
+        if value_list != None:
+            for i,val in enumerate(value_list):
+                component = val.split(",")[0]
+                value_SI = float(val.split(",")[3].replace("\n",""))
+                try:
+                    ind = component_list.index(component)
+                except:
+                    print("cannot find the component ",component)
+                dipole[ind] = value_SI
         return {"component":component_list,"dipole":dipole}
             
     
@@ -127,21 +147,22 @@ class Polar:
         ww_530 = np.full_like(component_list,np.nan,dtype=float)
         ww_1060 = np.full_like(component_list,np.nan,dtype=float)
         counter = 0
-        for i,val in enumerate(value_list):
-            component = val.split(",")[0]
-            value_SI = float(val.split(",")[3].replace("\n",""))
-            try:
-                ind = component_list.index(component)
-            except:
-                print("cannot find the component ",component)
-            if counter == 0:
-                static[ind] = value_SI
-            elif counter == 1:
-                ww_1060[ind] = value_SI
-            elif counter ==2:
-                ww_530[ind] = value_SI
-            if component == "zz":
-                counter += 1
+        if value_list != None:
+            for i,val in enumerate(value_list):
+                component = val.split(",")[0]
+                value_SI = float(val.split(",")[3].replace("\n",""))
+                try:
+                    ind = component_list.index(component)
+                except:
+                    print("cannot find the component ",component)
+                if counter == 0:
+                    static[ind] = value_SI
+                elif counter == 1:
+                    ww_1060[ind] = value_SI
+                elif counter ==2:
+                    ww_530[ind] = value_SI
+                if component == "zz":
+                    counter += 1
         return {"component":component_list,"static":static,
                 "w=530":ww_530,"w=1060":ww_1060}
     
@@ -158,25 +179,26 @@ class Polar:
         w2w_530 = np.full_like(component_list,np.nan,dtype=float)
         w2w_1060 = np.full_like(component_list,np.nan,dtype=float)
         counter = 0
-        for i,val in enumerate(value_list):
-            component = val.split(",")[0]
-            value_SI = float(val.split(",")[3].replace("\n",""))
-            try:
-                ind = component_list.index(component)
-            except:
-                print("cannot find the component ",component)
-            if counter == 0:
-                static[ind] = value_SI
-            elif counter == 1:
-                ww_1060[ind] = value_SI
-            elif counter ==2:
-                ww_530[ind] = value_SI
-            elif counter == 3:
-                w2w_1060[ind] = value_SI
-            elif counter == 4:
-                w2w_530[ind] = value_SI
-            if component == "zzz":
-                counter += 1
+        if value_list != None:
+            for i,val in enumerate(value_list):
+                component = val.split(",")[0]
+                value_SI = float(val.split(",")[3].replace("\n",""))
+                try:
+                    ind = component_list.index(component)
+                except:
+                    print("cannot find the component ",component)
+                if counter == 0:
+                    static[ind] = value_SI
+                elif counter == 1:
+                    ww_1060[ind] = value_SI
+                elif counter ==2:
+                    ww_530[ind] = value_SI
+                elif counter == 3:
+                    w2w_1060[ind] = value_SI
+                elif counter == 4:
+                    w2w_530[ind] = value_SI
+                if component == "zzz":
+                    counter += 1
         return {"component":component_list,"static":static,
                 "w=530":ww_530,"w=1060":ww_1060,
                 "2w=530":w2w_530,"2w=1060":w2w_1060}    
@@ -195,25 +217,26 @@ class Polar:
         w2w_530 = np.full_like(component_list,np.nan,dtype=float)
         w2w_1060 = np.full_like(component_list,np.nan,dtype=float)
         counter = 0
-        for i,val in enumerate(value_list):
-            component = val.split(",")[0]
-            value_SI = float(val.split(",")[3].replace("\n",""))
-            try:
-                ind = component_list.index(component)
-            except:
-                print("cannot find the component ",component)
-            if counter == 0:
-                static[ind] = value_SI
-            elif counter == 1:
-                ww_1060[ind] = value_SI
-            elif counter ==2:
-                ww_530[ind] = value_SI
-            elif counter == 3:
-                w2w_1060[ind] = value_SI
-            elif counter == 4:
-                w2w_530[ind] = value_SI
-            if component == "zzzz":
-                counter += 1
+        if value_list != None:
+            for i,val in enumerate(value_list):
+                component = val.split(",")[0]
+                value_SI = float(val.split(",")[3].replace("\n",""))
+                try:
+                    ind = component_list.index(component)
+                except:
+                    print("cannot find the component ",component)
+                if counter == 0:
+                    static[ind] = value_SI
+                elif counter == 1:
+                    ww_1060[ind] = value_SI
+                elif counter ==2:
+                    ww_530[ind] = value_SI
+                elif counter == 3:
+                    w2w_1060[ind] = value_SI
+                elif counter == 4:
+                    w2w_530[ind] = value_SI
+                if component == "zzzz":
+                    counter += 1
         return {"component":component_list,"static":static,
                 "w=530":ww_530,"w=1060":ww_1060,
                 "2w=530":w2w_530,"2w=1060":w2w_1060}
