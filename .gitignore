@@ -1,0 +1,20 @@
+# .gitignore for gaussian09 data analysis
+
+# system generated files
+.ipynb_checkpoints/
+src/__pycache__/
+
+# data files
+polar-extract/
+
+# analysis files
+notebook/
+
+# development files
+src/g09_output-dev.py
+
+# running files
+src/extract_polar_data.py
+
+
+
