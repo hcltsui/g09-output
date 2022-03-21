@@ -9,16 +9,19 @@ import numpy as np
 import pathlib
 
 class Polar:
-    '''
-    get electric dipole, dipole polarizability, first dipole hyperpolarizability
+    '''A class for extracting data from gaussian09 Polar output.
     
-    second dipole hyperpolarizability (in SI unit) from gaussian09 Polar output.
-    
-    directory: default=onedrive+hpc\\gaussian09\\
+    Attributes
+    ----------
+    directory: gaussian09 output file location,
+        default=onedrive+hpc\\gaussian09\\, include '\\' at the end of the directory.
 
-    filename: exclude ".out" file extension
+    filename: Exclude ".out" file extension
     
-    get_data() generates csv files in a subdirectory in polar-extract
+    Methods
+    -------
+    get_data() 
+        Generates csv files in a subdirectory in polar-extract directory.
     '''
     def __init__(self,directory,filename):
         onedrive = "D:\\OneDrive - Newcastle University\\"
@@ -349,9 +352,12 @@ class Polar:
                         f.writelines(line)
         
     def get_data(self):
-        '''
-        export data in csv files.
-        '''
+        """Generates csv files in a subdirectory in polar-extract directory.
+        
+        The name of the sub-directory is the filenmae. 
+        Get electric dipole, dipole polarizability, first dipole hyperpolarizability 
+        and second dipole hyperpolarizability (in SI unit). 
+        """
         f = open(self.fname,"r")
         lines = f.readlines()
         f.close()

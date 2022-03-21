@@ -8,11 +8,12 @@ Created on Fri Mar 18 14:02:17 2022
 import pandas as pd
 
 class Polar_df:
-    '''
-    read extracted data from polar output and generates pandas dataframe
+    """Extracted data from polar output and generates pandas dataframe.
     
+    Attributes
+    ----------
     directory: the sub-directory name containing the csv files
-    '''
+    """
     def __init__(self,directory):
         onedrive = "D:\\OneDrive - Newcastle University\\"
         g09_dir = onedrive+"python scripts\\gaussian09\\"
