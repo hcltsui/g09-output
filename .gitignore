@@ -12,9 +12,13 @@ notebook/
 
 # development files
 src/g09_output-dev.py
+src/logging-dev.py
 
 # running files
 src/extract_polar_data.py
+
+# commit message file
+commit_msg.txt
 
 
 

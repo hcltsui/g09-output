@@ -7,6 +7,9 @@ Created on Fri Mar 18 01:06:11 2022
 
 import numpy as np
 import pathlib
+import logging
+import logging.config
+logging.config.fileConfig("logging.conf")
 
 class Polar:
     '''A class for extracting data from gaussian09 Polar output.
@@ -54,25 +57,25 @@ class Polar:
         try:
             dipole_dipole_section = lines[dipole_start_i[1]:dipole_start_i[1]+7]
         except IndexError:
-            print("dipole is zero.")
+            logging.warning("dipole is zero.")
             dipole_dipole_section = None
         alpha_input_section = lines[alpha_start_i[0]:alpha_start_i[0]+32]
         try:
             alpha_dipole_section = lines[alpha_start_i[1]:alpha_start_i[1]+32]
         except IndexError:
-            print("dipole is zero.")
+            logging.warning("dipole is zero.")
             alpha_dipole_section = None
         beta_input_section = lines[beta_start_i[0]+3:beta_start_i[0]+126]
         try:
             beta_dipole_section = lines[beta_start_i[1]+3:beta_start_i[1]+126]
         except IndexError:
-            print("dipole is zero.")
+            logging.warning("dipole is zero.")
             beta_dipole_section = None
         gamma_input_section = lines[gamma_start_i[0]+3:gamma_start_i[0]+219]
         try:
             gamma_dipole_section = lines[gamma_start_i[1]+3:gamma_start_i[1]+219]
         except IndexError:
-            print("dipole is zero.")
+            logging.warning("dipole is zero.")
             gamma_dipole_section = None
         
         return (dipole_input_section,dipole_dipole_section,
@@ -111,7 +114,7 @@ class Polar:
             component = line.split(",")[0]
             value_SI = line.split(",")[3]
         except IndexError:
-            print(line)
+           logging.warning(line)
         newline = component+","+value_SI
         newline = line
         return newline
@@ -139,7 +142,7 @@ class Polar:
                 try:
                     ind = component_list.index(component)
                 except:
-                    print("cannot find the component ",component)
+                    logging.warning("cannot find the component {}".format(component))
                 dipole[ind] = value_SI
         return {"component":component_list,"dipole":dipole}
             
@@ -157,7 +160,7 @@ class Polar:
                 try:
                     ind = component_list.index(component)
                 except:
-                    print("cannot find the component ",component)
+                    logging.warning("cannot find the component {}".format(component))
                 if counter == 0:
                     static[ind] = value_SI
                 elif counter == 1:
@@ -189,7 +192,7 @@ class Polar:
                 try:
                     ind = component_list.index(component)
                 except:
-                    print("cannot find the component ",component)
+                    logging.warning("cannot find the component {}".format(component))
                 if counter == 0:
                     static[ind] = value_SI
                 elif counter == 1:
@@ -227,7 +230,7 @@ class Polar:
                 try:
                     ind = component_list.index(component)
                 except:
-                    print("cannot find the component ",component)
+                    logging.warning("cannot find the component {}".format(component))
                 if counter == 0:
                     static[ind] = value_SI
                 elif counter == 1:
@@ -255,7 +258,7 @@ class Polar:
         gamma_header = "component,Gamma(0;00),Gamma(-w;w0) w=530nm,"+ \
             "Gamma(-w;w0) w=1060nm,Gamma(-2w;ww) w=530nm,Gamma(-2w;ww) w=1060nm\n"
         if (key1=="dipole") and (key2=="input"):
-            print("{}-{}".format(key1,key2))
+            logging.info("{}-{}".format(key1,key2))
             fname_csv = csv_dir+"{}-{}.csv".format(key1,key2)
             with open(fname_csv,"w") as f:
                 f.writelines(dipole_header)
@@ -263,7 +266,7 @@ class Polar:
                     line = "{},{}\n".format(i,j)
                     f.writelines(line)
         elif (key1=="dipole") and (key2=="dipole"):
-            print("{}-{}".format(key1,key2))
+            logging.info("{}-{}".format(key1,key2))
             fname_csv = csv_dir+"{}-{}.csv".format(key1,key2)
             with open(fname_csv,"w") as f:
                 f.writelines(dipole_header)
@@ -271,7 +274,7 @@ class Polar:
                     line = "{},{}\n".format(i,j)
                     f.writelines(line)
         elif (key1=="alpha") and (key2=="input"):
-            print("{}-{}".format(key1,key2))
+            logging.info("{}-{}".format(key1,key2))
             fname_csv = csv_dir+"{}-{}.csv".format(key1,key2)
             with open(fname_csv,"w") as f:
                 f.writelines(alpha_header)
@@ -283,7 +286,7 @@ class Polar:
                         line = "{},{},{},{}\n".format(i,j,k,l)
                         f.writelines(line)
         elif (key1=="alpha") and (key2=="dipole"):
-            print("{}-{}".format(key1,key2))
+            logging.info("{}-{}".format(key1,key2))
             fname_csv = csv_dir+"{}-{}.csv".format(key1,key2)
             with open(fname_csv,"w") as f:
                 f.writelines(alpha_header)
@@ -295,7 +298,7 @@ class Polar:
                         line = "{},{},{},{}\n".format(i,j,k,l)
                         f.writelines(line)
         elif (key1=="beta") and (key2=="input"):
-            print("{}-{}".format(key1,key2))
+            logging.info("{}-{}".format(key1,key2))
             fname_csv = csv_dir+"{}-{}.csv".format(key1,key2)
             with open(fname_csv,"w") as f:
                 f.writelines(beta_header)
@@ -309,7 +312,7 @@ class Polar:
                         line = "{},{},{},{},{},{}\n".format(i,j,k,l,m,n)
                         f.writelines(line)
         elif (key1=="beta") and (key2=="dipole"):
-            print("{}-{}".format(key1,key2))
+            logging.info("{}-{}".format(key1,key2))
             fname_csv = csv_dir+"{}-{}.csv".format(key1,key2)
             with open(fname_csv,"w") as f:
                 f.writelines(beta_header)
@@ -323,7 +326,7 @@ class Polar:
                         line = "{},{},{},{},{},{}\n".format(i,j,k,l,m,n)
                         f.writelines(line)
         elif (key1=="gamma") and (key2=="input"):
-            print("{}-{}".format(key1,key2))
+            logging.info("{}-{}".format(key1,key2))
             fname_csv = csv_dir+"{}-{}.csv".format(key1,key2)
             with open(fname_csv,"w") as f:
                 f.writelines(gamma_header)
@@ -337,7 +340,7 @@ class Polar:
                         line = "{},{},{},{},{},{}\n".format(i,j,k,l,m,n)
                         f.writelines(line)
         elif (key1=="gamma") and (key2=="dipole"):
-            print("{}-{}".format(key1,key2))
+            logging.info("{}-{}".format(key1,key2))
             fname_csv = csv_dir+"{}-{}.csv".format(key1,key2)
             with open(fname_csv,"w") as f:
                 f.writelines(gamma_header)
