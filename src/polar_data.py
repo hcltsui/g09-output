@@ -40,26 +40,5 @@ class Polar_df:
         self.gamma = pd.concat([self.gamma_input,self.gamma_dipole],
                                axis=1,keys=["input","dipole"])
 
-class Display:
-    """Display function for polar data from dataframe"""
-    def gamma(molecule_df,components):
-        """Display Gamma values of components of a molecule. 
         
-        Parameters
-        ----------
-        molecule_df: dataframe object generated from Polar_df
-        compoents: list, components to be displayed        
-        """
-        for com in components:
-            print(com)
-            print("Gamma(-w;w,0)")
-            print("input - 530nm: {}, 1060nm: {}; ".format(molecule_df.gamma["input"]["Gamma(-w;w0) w=530nm"][com],
-                                                           molecule_df.gamma["input"]["Gamma(-w;w0) w=1060nm"][com])+\
-                  "dipole - 530nm: {}, 1060nm: {}".format(molecule_df.gamma["dipole"]["Gamma(-w;w0) w=530nm"][com],
-                                                          molecule_df.gamma["dipole"]["Gamma(-w;w0) w=1060nm"][com]))
-            print("Gamma (-2w;w,w)")
-            print("input - 530nm: {}, 1060nm: {}; ".format(molecule_df.gamma["input"]["Gamma(-2w;ww) w=530nm"][com],
-                                                           molecule_df.gamma["input"]["Gamma(-2w;ww) w=1060nm"][com])+\
-                  "dipole - 530nm: {}, 1060nm: {}".format(molecule_df.gamma["dipole"]["Gamma(-2w;ww) w=530nm"][com],
-                                                          molecule_df.gamma["dipole"]["Gamma(-2w;ww) w=1060nm"][com]))                
                 
