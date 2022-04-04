@@ -7,15 +7,21 @@ src/__pycache__/
 # data files
 polar-extract/
 
+# reference files
+src/periodic_table.csv
+
 # analysis files
 notebook/
 
 # development files
 src/g09_output-dev.py
 src/logging-dev.py
+src/polar_output-dev.py
+src/opt_output-dev.py
 
 # running files
 src/extract_polar_data.py
+src/extract_opt_xyz.py
 
 # commit message file
 commit_msg.txt
