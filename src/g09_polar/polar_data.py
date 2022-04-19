@@ -17,26 +17,23 @@ class Polar_df:
     def __init__(self,directory):
         """Generate dataframe for dipole, alpha, beta and gamma.
         
-        directory: directory containing the files, exclude "\\", 
-            default="polar-extra\\"        
+        directory: directory containing the files, exclude "\\"       
         """
-        onedrive = "D:\\OneDrive - Newcastle University\\"
-        g09_dir = onedrive+"python scripts\\gaussian09\\"
-        sub_dir = g09_dir+"polar-extract\\"+directory+"\\"
-        self.dipole_input = pd.read_csv(sub_dir+"dipole-input.csv",index_col=0)
-        self.dipole_dipole = pd.read_csv(sub_dir+"dipole-dipole.csv",index_col=0)
+        data_dir = directory+"\\"
+        self.dipole_input = pd.read_csv(data_dir+"dipole-input.csv",index_col=0)
+        self.dipole_dipole = pd.read_csv(data_dir+"dipole-dipole.csv",index_col=0)
         self.dipole = pd.concat([self.dipole_input,self.dipole_dipole],
                                 axis=1,keys=["input","dipole"])
-        self.alpha_input = pd.read_csv(sub_dir+"alpha-input.csv",index_col=0)
-        self.alpha_dipole = pd.read_csv(sub_dir+"alpha-dipole.csv",index_col=0)
+        self.alpha_input = pd.read_csv(data_dir+"alpha-input.csv",index_col=0)
+        self.alpha_dipole = pd.read_csv(data_dir+"alpha-dipole.csv",index_col=0)
         self.alpha = pd.concat([self.alpha_input,self.alpha_dipole],
                                axis=1,keys=["input","dipole"])
-        self.beta_input = pd.read_csv(sub_dir+"beta-input.csv",index_col=0)
-        self.beta_dipole = pd.read_csv(sub_dir+"beta-dipole.csv",index_col=0)
+        self.beta_input = pd.read_csv(data_dir+"beta-input.csv",index_col=0)
+        self.beta_dipole = pd.read_csv(data_dir+"beta-dipole.csv",index_col=0)
         self.beta = pd.concat([self.beta_input,self.beta_dipole],
                               axis=1,keys=["input","dipole"])
-        self.gamma_input = pd.read_csv(sub_dir+"gamma-input.csv",index_col=0)
-        self.gamma_dipole = pd.read_csv(sub_dir+"gamma-dipole.csv",index_col=0)
+        self.gamma_input = pd.read_csv(data_dir+"gamma-input.csv",index_col=0)
+        self.gamma_dipole = pd.read_csv(data_dir+"gamma-dipole.csv",index_col=0)
         self.gamma = pd.concat([self.gamma_input,self.gamma_dipole],
                                axis=1,keys=["input","dipole"])
 
