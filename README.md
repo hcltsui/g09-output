@@ -36,3 +36,6 @@ Download the repository and in the location where ```setup.cfg``` is run
 ```python -m build```
 To install the module
 ```python -m pip install dist\g09_output-0.2.0-py3-none-any.whl```
+
+## Remark
+This module is tested on windonws 10 with python 3.7.6.
