@@ -5,32 +5,23 @@ Created on Mon Apr  4 13:06:57 2022
 @author: nht45
 """
 
-from reference import periodic_table
-
 class Opt:
     """A class for extracting xyz coordinates from gaussian09 Polar output
     
     Attributes
     ----------
-    directory: gaussian09 output file location,
-        default=onedrive+hpc\\gaussian09\\, include '\\' at the end of the directory.
-
-    filename: Exclude ".out" file extension
+    filename: assume file extension = ".out"; no "." in filename
     
     Methods
     -------
     get_xyz() 
         Generates xyz files in the same directory as output file.
     """
-    def __init__(self,directory,filename):
-        onedrive = "D:\\OneDrive - Newcastle University\\"
-        g09_dir = onedrive+"hpc\\gaussian09\\"
-        sub_dir = g09_dir+directory
-        self.filename = filename
-        self.fname = sub_dir+filename+".out"
+    def __init__(self,filename):
+        self.fname = filename
     
     def _get_section(self,lines):
-        """return the start and end index for the optimised coordination section"""
+        """Return the start and end index for the optimised coordination section."""
         breakline = " ---------------------------------------------------------------------"
         header_index = []
         breakline_index = []
@@ -48,7 +39,7 @@ class Opt:
         return (start_index,end_index)
     
     def _get_coord(self,section):
-        """return list of elements and coordinates"""
+        """Return list of elements and coordinates."""
         atom_list = []
         atom_coord_list = []
         for line in section:
@@ -77,7 +68,12 @@ class Opt:
         return atom_coord_list
         
     def _get_symbol(self,atomic_num):
-        """Return symbol from periodic table"""
+        """Return symbol from periodic table."""
+        from numpy import genfromtxt
+        import g09_opt
+        data_dir = g09_opt.__path__[0]+"\\"
+        periodic_table = genfromtxt(data_dir+"periodic_table.csv",
+                                    dtype=str,delimiter=",",skip_header=1)
         for element in periodic_table:
             if atomic_num  == element[0]:
                 symbol = element[1]
@@ -85,9 +81,9 @@ class Opt:
         return symbol
     
     def _export_xyz(self,atom_coord_list):
-        """Export xyz file"""
+        """Export xyz file."""
         num = len(atom_coord_list)
-        fname = self.fname.strip(".out")+".xyz"
+        fname = self.fname.split(".")[0]+".xyz"
         xyz_header = "{}\n{}\n".format(num,self.filename)
         with open(fname,"w") as f:
             f.writelines(xyz_header)
@@ -96,11 +92,8 @@ class Opt:
                 f.writelines("{}\n".format(i))
                 print("{}\n".format(i))
                 
-        
-            
-    
     def get_xyz(self):
-        """Export coordinate in xyz file in the same directory as output file"""
+        """Export coordinate in xyz file in the same directory as output file."""
         f = open(self.fname,"r")
         lines = f.readlines()
         f.close()

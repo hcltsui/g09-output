@@ -1,0 +1,3 @@
+include src/g09_opt/periodic_table.csv
+
+exclude src/g09_opt/extract_opt_xyz.py src/g09_opt/opt_output-dev.py

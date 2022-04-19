@@ -8,20 +8,20 @@ src/__pycache__/
 polar-extract/
 
 # reference files
-src/periodic_table.csv
+src/g09_opt/periodic_table.csv
 
 # analysis files
 notebook/
 
 # development files
-src/g09_output-dev.py
-src/logging-dev.py
-src/polar_output-dev.py
-src/opt_output-dev.py
+src/g09_output.py
+src/g09_polar/logging-dev.py
+src/g09_polar/polar_output-dev.py
+src/g09_opt/opt_output-dev.py
 
 # running files
-src/extract_polar_data.py
-src/extract_opt_xyz.py
+src/g09_polar/extract_polar_data.py
+src/g09_opt/extract_opt_xyz.py
 
 # commit message file
 commit_msg.txt
