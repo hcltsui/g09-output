@@ -5,11 +5,15 @@ except ImportError:
     from g09_opt import Opt
 
 def main():
-    description = "Extract coordinates from guassian09 optimization file"
+    # TODO: add optional argument: output directory
+    # TODO: add optional argument: plotting force and displacement values 
+    # against optimization steps
+    description = "Extract coordinates from guassian09 optimization file."
     parser = argparse.ArgumentParser(description=description)
     fname_help = "filename; assume file extension is '.out'; no '.' in filename."
     parser.add_argument("fname", type=str, help=fname_help)
-    fname = parser.fname
+    args = parser.parse_args()
+    fname = args.fname
     f = Opt(fname)
     f.get_xyz()
 

@@ -84,13 +84,13 @@ class Opt:
         """Export xyz file."""
         num = len(atom_coord_list)
         fname = self.fname.split(".")[0]+".xyz"
-        xyz_header = "{}\n{}\n".format(num,self.filename)
+        xyz_header = "{}\n{}\n".format(num,self.fname)
         with open(fname,"w") as f:
             f.writelines(xyz_header)
             print(xyz_header)
             for i in atom_coord_list:
                 f.writelines("{}\n".format(i))
-                print("{}\n".format(i))
+                print("{}".format(i))
                 
     def get_xyz(self):
         """Export coordinate in xyz file in the same directory as output file."""

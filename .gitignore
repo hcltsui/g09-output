@@ -4,10 +4,14 @@
 .ipynb_checkpoints/
 src/__pycache__/
 
+# packaging files
+dist/
+g09_output.egg-info/
+
 # data files
 polar-extract/
 
-# reference files
+# data files for packaging
 src/g09_opt/periodic_table.csv
 
 # analysis files

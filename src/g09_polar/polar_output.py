@@ -9,29 +9,24 @@ import numpy as np
 import pathlib
 import logging
 import logging.config
-logging.config.fileConfig("logging.conf")
+import g09_polar
+conf_dir = g09_polar.__path__[0]+"\\"
+logging.config.fileConfig(conf_dir+"logging.conf")
 
 class Polar:
     '''A class for extracting data from gaussian09 Polar output.
     
     Attributes
     ----------
-    directory: gaussian09 output file location,
-        default=onedrive+hpc\\gaussian09\\, include '\\' at the end of the directory.
-
-    filename: Exclude ".out" file extension
+    filename: assume file extension is ".out"; no "." in filename
     
     Methods
     -------
     get_data() 
         Generates csv files in a subdirectory in polar-extract directory.
     '''
-    def __init__(self,directory,filename):
-        onedrive = "D:\\OneDrive - Newcastle University\\"
-        g09_dir = onedrive+"hpc\\gaussian09\\"
-        sub_dir = g09_dir+directory
-        self.filename = filename
-        self.fname = sub_dir+filename+".out"
+    def __init__(self,filename):
+        self.fname = filename
     
     def _get_sections(self,lines):
         dipole_start = " Electric dipole moment"
@@ -248,7 +243,7 @@ class Polar:
                 "2w=530":w2w_530,"2w=1060":w2w_1060}
 
     def _export_csv(self,data,key1="dipole",key2="input"):
-        csv_dir = "..\\polar-extract\\{}\\".format(self.filename)
+        csv_dir = "{}\\".format(self.fname.split(".")[0])
         pathlib.Path(csv_dir).mkdir(exist_ok=True)
         dipole_header = "component,dipole moment\n"
         alpha_header = "component,Alpha(0;0),Alpha(-w;w) w=530nm,"+ \
@@ -393,7 +388,7 @@ class Polar:
         self._export_csv(gamma_input_data,key1="gamma",key2="input")
         self._export_csv(gamma_dipole_data,key1="gamma",key2="dipole")
         
-        print("Done.")
+        print("DONE.")
         
         
         
