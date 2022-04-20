@@ -11,14 +11,8 @@ src/g09_output/polar/__pycache__/
 dist/
 g09_output.egg-info/
 
-# data files
-polar-extract/
-
 # data files for packaging
 src/g09_opt/periodic_table.csv
-
-# analysis files
-notebook/
 
 # development files
 src/g09_output.py

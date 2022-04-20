@@ -19,6 +19,16 @@ class Opt:
     """
     def __init__(self,filename):
         self.fname = filename
+        
+    def _check_optimised(self,lines):
+        """Check if optimisation is completed. """
+        optimised = False
+        optimised_line = " Optimization completed."
+        for line in lines:
+            if optimised_line in line:
+                optimised = True
+                break
+        return optimised
     
     def _get_section(self,lines):
         """Return the start and end index for the optimised coordination section."""
@@ -98,17 +108,13 @@ class Opt:
         lines = f.readlines()
         f.close()
         
-        section_index = self._get_section(lines)
-        section = lines[section_index[0]:section_index[1]]
-        atom_coord_list = self._get_coord(section)
-        self._export_xyz(atom_coord_list)
-        print("DONE.")
-        
-        
-        
-        
-        
-        
-        
-        
-        
+        optimised = self._check_optimised(lines)
+        if optimised == True:
+            section_index = self._get_section(lines)
+            section = lines[section_index[0]:section_index[1]]
+            atom_coord_list = self._get_coord(section)
+            self._export_xyz(atom_coord_list)
+            print("DONE.")
+        elif optimised == False:
+            print("WARNING: Optimization is not completed.")
+            pass
