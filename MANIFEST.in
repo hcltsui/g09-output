@@ -1,4 +1,4 @@
-include src/g09_opt/periodic_table.csv src/g09_polar/logging.conf
+include src/g09_output/opt/periodic_table.csv src/g09_output/polar/logging.conf
 
-exclude src/g09_opt/extract_opt_xyz.py src/g09_opt/opt_output-dev.py 
-exclude src/g09_polar/extract_polar_data.py src/g09_polar/logging-dev.py src/g09_polar/polar_output-dev.py
+exclude src/g09_output/opt/extract_opt_xyz.py src/g09_output/opt/opt_output-dev.py 
+exclude src/g09_output/polar/extract_polar_data.py src/g09_output/polar/logging-dev.py src/g09_output/polar/polar_output-dev.py

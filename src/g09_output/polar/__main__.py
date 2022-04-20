@@ -2,7 +2,7 @@ import argparse
 try:
     from . import Polar
 except ImportError:
-    from g09_polar import Polar
+    from polar import Polar
     
 def main():
     description = "Extract data from guassian09 polar file."

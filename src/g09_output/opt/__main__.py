@@ -2,7 +2,7 @@ import argparse
 try:
     from . import Opt
 except ImportError:
-    from g09_opt import Opt
+    from opt_output import Opt
 
 def main():
     # TODO: add optional argument: output directory

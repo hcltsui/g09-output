@@ -70,8 +70,8 @@ class Opt:
     def _get_symbol(self,atomic_num):
         """Return symbol from periodic table."""
         from numpy import genfromtxt
-        import g09_opt
-        data_dir = g09_opt.__path__[0]+"\\"
+        import g09_output.opt as opt_module
+        data_dir = opt_module.__path__[0]+"\\"
         periodic_table = genfromtxt(data_dir+"periodic_table.csv",
                                     dtype=str,delimiter=",",skip_header=1)
         for element in periodic_table:

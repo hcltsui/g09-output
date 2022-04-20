@@ -9,8 +9,8 @@ import numpy as np
 import pathlib
 import logging
 import logging.config
-import g09_polar
-conf_dir = g09_polar.__path__[0]+"\\"
+import g09_output.polar as polar_module
+conf_dir = polar_module.__path__[0]+"\\"
 logging.config.fileConfig(conf_dir+"logging.conf")
 
 class Polar:
