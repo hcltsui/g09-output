@@ -20,28 +20,56 @@ class Opt:
     def __init__(self,filename):
         self.fname = filename
         
+    def _check_g09(self,lines):
+        """Check if the file is a gaussian09 output file"""
+        g09 = False
+        g09_line = "This is part of the Gaussian(R) 09 program."
+        for line in lines:
+            if g09_line in line:
+                g09 = True
+                break
+        return g09
+    
+    def _check_opt(self,lines):
+        """Check if the file is an optimization output file"""
+        opt = False
+        opt_line = "GradGradGradGradGradGradGradGradGradGradGradGradGradGradGradGradGradGrad"
+        for line in lines:
+            if opt_line in lines:
+                opt = True
+                break
+        return opt
+        
     def _check_optimised(self,lines):
         """Check if optimisation is completed. """
-        optimised = False
+        opt_line_index = []
         optimised_line = " Optimization completed."
-        for line in lines:
+        for num,line in enumerate(lines):
             if optimised_line in line:
-                optimised = True
-                break
-        return optimised
+                opt_line_index.append(num)
+        return opt_line_index
     
-    def _get_section(self,lines):
+    def _get_section(self,lines,opt_line_ind):
         """Return the start and end index for the optimised coordination section."""
+        # identify the last completed optimization in multiple steps job
+        opt_index = opt_line_ind[-1]
+        # identify coordinate sections
+        headline = "Standard orientation:"
         breakline = " ---------------------------------------------------------------------"
         header_index = []
         breakline_index = []
         for num,line in enumerate(lines):
-            if "Standard orientation:" in line:
+            if headline in line:
                 header_index.append(num)
             if breakline in line:
                 breakline_index.append(num)
-        # identify coordination section
-        start_index = header_index[-1]+5
+        # identify the coordination section after the completed optimization
+        for ind in header_index:
+            if ind > opt_index:
+                head_ind = ind
+                break
+        # get indices for the coordinate section
+        start_index = head_ind+5
         for i in breakline_index:
             if i > start_index:
                 end_index = i
@@ -108,13 +136,28 @@ class Opt:
         lines = f.readlines()
         f.close()
         
-        optimised = self._check_optimised(lines)
-        if optimised == True:
-            section_index = self._get_section(lines)
+        g09 = self._check_g09(lines)
+        if g09:
+            pass
+        elif not g09:
+            print("WARNING: This is not a gaussian09 output file.")
+            print("Data extraction may be incorrect.")
+        
+        opt = self._check_opt(lines)
+        if opt:
+            pass
+        elif not opt:
+            print("WARNING: This is not an optimization file.")
+            print("Programme ended.")
+            return
+                  
+        opt_line_ind = self._check_optimised(lines)
+        if len(opt_line_ind) > 0:
+            section_index = self._get_section(lines,opt_line_ind)
             section = lines[section_index[0]:section_index[1]]
             atom_coord_list = self._get_coord(section)
             self._export_xyz(atom_coord_list)
             print("DONE.")
-        elif optimised == False:
+        elif len(opt_line_ind) == 0:
             print("WARNING: Optimization is not completed.")
             pass
