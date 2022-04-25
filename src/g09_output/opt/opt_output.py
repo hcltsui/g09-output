@@ -29,16 +29,6 @@ class Opt:
                 g09 = True
                 break
         return g09
-    
-    def _check_opt(self,lines):
-        """Check if the file is an optimization output file"""
-        opt = False
-        opt_line = "GradGradGradGradGradGradGradGradGradGradGradGradGradGradGradGradGradGrad"
-        for line in lines:
-            if opt_line in lines:
-                opt = True
-                break
-        return opt
         
     def _check_optimised(self,lines):
         """Check if optimisation is completed. """
@@ -142,14 +132,6 @@ class Opt:
         elif not g09:
             print("WARNING: This is not a gaussian09 output file.")
             print("Data extraction may be incorrect.")
-        
-        opt = self._check_opt(lines)
-        if opt:
-            pass
-        elif not opt:
-            print("WARNING: This is not an optimization file.")
-            print("Programme ended.")
-            return
                   
         opt_line_ind = self._check_optimised(lines)
         if len(opt_line_ind) > 0:
